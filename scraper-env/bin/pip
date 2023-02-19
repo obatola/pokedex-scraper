@@ -1,4 +1,4 @@
-#!/Users/oba/Developer/tutorial_scraper/tutorial_scraper-env/bin/python3.10
+#!/Users/oba/Developer/pokedex_scraper/scraper-env/bin/python3.10
 # -*- coding: utf-8 -*-
 import re
 import sys

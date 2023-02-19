@@ -1,6 +1,4 @@
 from bs4 import BeautifulSoup
-import requests
-import json
 
 from utils import dumpJSONToFile, readJSONDataFromFile
 
@@ -47,6 +45,31 @@ def renameTotalToBaseStatTotal(pokemon):
     total = pokemon['total']
     del pokemon['total']
     pokemon['baseStatTotal'] = total
+
+def convertAllApplicableFieldsToNumbers(pokemon):
+    keyValuesToConvertToInt = [
+        'catchRate',
+        'baseExperience',
+        'hp',
+        'attack',
+        'defense',
+        'specialAttack',
+        'specialDefense',
+        'speed',
+    ]
+
+    keyValuesToConvertToFloat = [
+        'weightKg',
+        'heightM'
+    ]
+
+    for key in keyValuesToConvertToInt:
+        convertedInt = int(pokemon[key])
+        pokemon[key] = convertedInt
+
+    for key in keyValuesToConvertToFloat:
+        convertedFloat = float(pokemon[key])
+        pokemon[key] = convertedFloat
     
 
 
@@ -58,7 +81,7 @@ def cleanPokemonData(pokemon):
     convertEvolutionArrayToArrayOfIds(pokemon)
     cleanDescriptionsText(pokemon)
     renameTotalToBaseStatTotal(pokemon)
-    # convert total to baseStatTotal
+    convertAllApplicableFieldsToNumbers(pokemon)
 
 def cleanAllPokemonData():
     indexed_pokemon_dictionary = readJSONDataFromFile(INPUT_FILE)
@@ -66,7 +89,7 @@ def cleanAllPokemonData():
     
     for pokemonId in listOfAllPokemonIds:
         cleanPokemonData(indexed_pokemon_dictionary[pokemonId])
-        print(pokemonId, indexed_pokemon_dictionary[pokemonId]['name'], "cleaned.")
+        print(f'{pokemonId} {indexed_pokemon_dictionary[pokemonId]["name"]} cleaned.')
 
     print('\ndone!')
     return indexed_pokemon_dictionary
